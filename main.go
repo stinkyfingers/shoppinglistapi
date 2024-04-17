@@ -8,7 +8,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/stinkyfingers/shoppinglistapi.git/source"
+	"github.com/stinkyfingers/shoppinglistapi/server"
+	"github.com/stinkyfingers/shoppinglistapi/source"
 )
 
 var (
@@ -16,8 +17,30 @@ var (
 	query = flag.String("query", "orange", "search query")
 )
 
+const port = ":8084"
+
 func main() {
-	flag.Parse()
+	fmt.Print("Running. \n")
+	s, err := server.NewServer("jds")
+	if err != nil {
+		log.Fatalln(err)
+	}
+	rh, err := server.NewMux(s)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = http.ListenAndServe(port, rh)
+	if err != nil {
+		log.Print(err)
+	}
+}
+
+/*
+deprecated, but keep for reference
+*/
+
+func cli() {
 	source, err := source.GetSource(*store)
 	if err != nil {
 		log.Fatal("source ", err)
@@ -39,10 +62,6 @@ func main() {
 		fmt.Println(item)
 	}
 }
-
-/*
-deprecated, but keep for reference
-*/
 
 const (
 	appKey             = "festival_foods"
