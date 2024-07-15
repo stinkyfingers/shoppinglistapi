@@ -3,10 +3,15 @@ ID uuid
 FirstName string
 LastName string
 Email string
+PictureURL string
 
-List
+Collection
 Creator User 
 Shared []User
+Name string
+Lists []List
+
+List
 Name string
 Items []ListItem
 Store Store
